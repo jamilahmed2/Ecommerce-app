@@ -1,14 +1,16 @@
-// import connectDB from './db.js'
+import connectDB from './database/db.js'
 import express from 'express'
 import colors from 'colors'
 import morgan from "morgan";
-const app = express();
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
-// const abcd = require('./routes/abcd');
-dotenv.config();
+import authRoutes from "./routes/authRoute.js";
+// import categoryRoutes from "./routes/categoryRoute.js";
+// import productRoutes from "./routes/productRoute.js";
 
+const app = express();
+dotenv.config();
 app.use(express.json())
 app.use(cors());
 app.use(bodyParser.json());
@@ -16,12 +18,18 @@ app.use(morgan('dev'));
 app.disable('x-powered-by');
 
 
-app.use('/', (req, res) => {
-  res.send('<h1>Hello</h1>')
+//routes
+app.use("/api/auth", authRoutes);
+// app.use("/api/category", categoryRoutes);
+// app.use("/api/product", productRoutes);
+
+//rest api
+app.get("/", (req, res) => {
+  res.status(200).json("Welcome to ecommerce app");
 });
 
 // Connect to MongoDB
-// connectDB();
+connectDB();
 
 const PORT = process.env.PORT || 8080;
 
